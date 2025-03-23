@@ -1,0 +1,17 @@
+.cameraWrapper{
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+}
+
+.cameraWrapper div:first-of-type{
+    padding: 0px !important;
+}
+
+
+.cameraWrapper video{
+    position: relative !important;
+}
+.cameraFooter{
+    padding: 20px;
+}

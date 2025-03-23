@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  --hover-transition: .2s;
+  --border-radius: 6px;
+
+  --shadow-bottom-soft: 0px 2px 2px 0px rgba(0, 0, 0, .15);
+  --shadow-bottom-hard: 0px 2px 4px 1px rgba(0, 0, 0, .15);
+
+  --color-contrast-lower: hsl(240, 4%, 85%);
+  --color-contrast-low: hsl(240, 4%, 65%);
+
+  --font-color: rgb(25, 25, 25);
+
+  overflow: hidden;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #ffffff #00000000;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #00000000;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ffffff;
+  border-radius: 3px;
+  border: 3px none #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  height: 100%;
+}
+
+.modal-close-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 22px;
+  color: white;
+  background-color: rgba(0, 0, 0, 50%);
+  opacity: 75%;
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.modal-close-button:hover {
+  opacity: 100%;
+}
+
+hr {
+  width: 100%;
+  margin: 10px 0px 10px 0px;
+  background-color: rgb(200, 200, 200);
+  height: 1px;
+  border: none;
+}
+
+.react-tooltip {
+  max-width: 97%;
+  z-index: 1;
+}
