@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { AttributeEntity } from './attribute.entity';
 import { SubscriptionEntity } from './subscriptions.entity';

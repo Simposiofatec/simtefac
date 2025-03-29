@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
 import { AttributeEntity } from './attribute.entity';
 import { UserViewModel } from '../viewModels/user.view-model';
@@ -13,6 +14,9 @@ export class UserEntity {
 
     @Column({ nullable: true })
     password: string | undefined;
+
+    @Column({ nullable: true})
+    gerouCertificado: boolean | false;
 
     @ManyToMany(() => AttributeEntity, {
         cascade: true

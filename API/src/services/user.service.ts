@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateUserDTO } from 'src/models/dtos/createUser.dto';
@@ -102,5 +103,21 @@ export class UserService {
 
             this.createUser(createUserDTO);
         });
+    }
+
+    async getCertificado(userEmail: string): Promise<void> {
+        const user = await this.userRepository.findOne({
+            where: {
+                email: userEmail,
+            },
+        });
+    
+        if (!user) {
+            throw new Error('Usuário não encontrado');
+        }
+    
+        user.gerouCertificado = true;
+        
+        await this.userRepository.save(user); 
     }
 }

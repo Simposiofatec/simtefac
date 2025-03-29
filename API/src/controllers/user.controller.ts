@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Get, HttpStatus, Param, Post, Res, Query, Req, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { CreateUserDTO } from 'src/models/dtos/createUser.dto';
 import { eError } from 'src/models/errors';
@@ -126,4 +127,10 @@ export class UserController {
             });
         });
     }
+
+    @Get('getCertificado')
+    async getCertificado(@Query('email') usuarioEmail: string) {
+        return this.userService.getCertificado(usuarioEmail);
+    }
+    
 }

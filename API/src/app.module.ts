@@ -10,6 +10,7 @@ import { EventModule } from './modules/event.module';
 import { SubscriptionModule } from './modules/subscription.module';
 import { MailerService } from './services/mailer.service';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { CertificateModule } from './modules/certificate.module';
 
 require('dotenv').config();
 @Module({
@@ -24,6 +25,7 @@ require('dotenv').config();
     UserModule,
     AuthenticationModule,
     ParameterModule,
+    CertificateModule,
     EventModule,
     SubscriptionModule,
     TypeOrmModule.forRoot({

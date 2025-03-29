@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Collection, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { EventEntity } from "./event.entity";
