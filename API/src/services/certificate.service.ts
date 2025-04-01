@@ -4,19 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Not, Repository } from 'typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
-import { EventEntity } from 'src/models/entities/event.entity';
-import { AttributeEntity } from 'src/models/entities/attribute.entity';
 import { SubscriptionEntity } from 'src/models/entities/subscriptions.entity';
 
 @Injectable()
 export class CertificateService {
     constructor(
-        @InjectRepository(EventEntity)
-        private eventRepository: Repository<EventEntity>,
-
-        @InjectRepository(AttributeEntity)
-        private attributeRepository: Repository<AttributeEntity>,
-
         @InjectRepository(SubscriptionEntity)
         private subscriptionRepository: Repository<SubscriptionEntity>
     ) { }
