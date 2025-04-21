@@ -1,16 +1,16 @@
 import axios from 'axios';
 import config from '../config.js';
 
-export function GetCertificado(): Promise<Blob> {
+export function GetCertificado(nome: string): Promise<Blob> {
     return new Promise((resolve, reject) => {
-        axios.get(`${config.API_ROUTE}/certificate/certificado`, {
-            responseType: 'blob' // Tipo correto para arquivos binários
+        axios.get(`${config.API_ROUTE}/certificate/certificado/${nome}`, {
+            responseType: 'blob' // Retorna o arquivo como Blob (binário)
         })
         .then(response => {
-            resolve(response.data); // Retorna o Blob com o arquivo
+            resolve(response.data);
         })
         .catch(error => {
-            reject(error); // Caso ocorra erro
+            reject(error);
         });
     });
 }

@@ -29,16 +29,22 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^10.0.0",
     "crypto-js": "^4.2.0",
+    "docxtemplater": "^3.61.1",
     "dotenv": "^16.3.1",
     "exceljs": "^4.4.0",
+    "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
+    "libreoffice-convert": "^1.6.1",
     "mammoth": "^1.9.0",
     "mssql": "^9.3.2",
     "nodemailer": "^6.9.7",
+    "npm": "^11.3.0",
+    "pizzip": "^3.1.8",
     "qrcode": "^1.5.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.17"
+    "typeorm": "^0.3.17",
+    "unoconv": "^0.1.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
