@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../App";
+import { ParametersContext, UserContext } from "../../App";
 import { User } from "../../models/user.model";
+import { Parameters } from "../../models/parameters.model"
 import { GetCertificado, GetPresencas, GetPresencaCertificado } from "../../services/certificate.service";
 
 
 export function CertificadoPdf() {
   const user = useContext(UserContext);
+  const parameters = useContext(ParametersContext);
   const [usuario, setUsuario] = useState<User | null>(null);
   const [presencas, setPresencas] = useState<number | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [duration, setDuration] = useState<Parameters | null>(null);
   /**
  * @summary Resgata o usuario logado e insere ele no usuario
  * @description Isso foi feito para evitar erro de undefined que ocorria
@@ -24,6 +27,11 @@ export function CertificadoPdf() {
 
   useEffect(() => {
   async function presencasFunction(){
+    if(parameters){
+      setDuration(parameters)
+    }else{
+      setDuration(null);
+    }
     try{
     if(user){
       const presencas = await GetPresencas(user.email.toString());
@@ -42,8 +50,8 @@ presencasFunction();
       alert("Usuário não encontrado!");
       return;
     }
-  
-    if (presencas == null || presencas < 4) {
+
+    if (!duration || presencas == null || presencas < duration.eventDuration-1) {
       alert("Você não possui a quantidade necessária de presenças.");
       return;
     }

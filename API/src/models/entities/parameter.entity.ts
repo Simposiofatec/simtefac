@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('Parameter')
@@ -16,4 +17,7 @@ export class ParameterEntity {
    
     @Column({ nullable: true, comment: 'Define a data final do simpósio' })
     eventsEnd: Date;
+
+    @Column({nullable: true, comment: 'Define quantos dias tera o evento'})
+    eventDuration: number;
 }

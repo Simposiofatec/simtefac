@@ -4,4 +4,5 @@ export interface Parameters {
     subscriptionsEnd: Date;
     eventsStart: Date;
     eventsEnd: Date;
+    eventDuration: number;
 }
