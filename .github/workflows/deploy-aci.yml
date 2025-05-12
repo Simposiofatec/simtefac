@@ -53,11 +53,14 @@ jobs:
             --resource-group Front \
             --name simtefac \
             --image testsimtefac.azurecr.io/simtefac:${{ env.IMAGE_TAG }} \
-            --ip-address public \
+            --ip-address Public \
             --ports 8080 \
             --environment-variables PORT=8080 \
             --restart-policy Never \
             --dns-name-label simtefachml \
             --location brazilsouth \
+            --os-type Linux \
+            --registry-login-server testsimtefac.azurecr.io \
             --registry-username ${{ secrets.REGISTRY_USERNAME }} \
-            --registry-password ${{ secrets.REGISTRY_PASSWORD }}
+            --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
+            --query ipAddress.fqdn
