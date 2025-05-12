@@ -19,7 +19,7 @@ export class CertificateService {
 
     async gerarCertificado(nomeUsuario: string): Promise<Buffer> {
         const modeloPath = path.resolve(__dirname, '../../file/Certificado.docx');
-        const tempDocxPath = path.resolve(__dirname, `../../temp/certificado_${Date.now()}.docx`);
+        const tempDocxPath = path.resolve(__dirname, `../../file/certificado_${Date.now()}.docx`);
         const tempPdfPath = tempDocxPath.replace('.docx', '.pdf');
     
         // 1. Carrega o template
@@ -53,7 +53,10 @@ export class CertificateService {
     
         // 2. Converte DOCX para PDF usando LibreOffice (modo headless)
         await new Promise((resolve, reject) => {
-            exec(`"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf "${tempDocxPath}" --outdir "${path.dirname(tempDocxPath)}"`, (error, stdout, stderr) => {
+
+            //exec(`"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf "${tempDocxPath}" --outdir "${path.dirname(tempDocxPath)}"`, (error, stdout, stderr) => {
+            //EM TESTE LOCAL, FORA DE CONTAINER: SUBSTITUA A LINHA ABAIXO POR ESTA ACIMA: 
+            exec(`soffice --headless --convert-to pdf "${tempDocxPath}" --outdir "${path.dirname(tempDocxPath)}"`, (error, stdout, stderr) => {
                 if (error) {
                     return reject(`Erro na conversão: ${stderr}`);
                 }
