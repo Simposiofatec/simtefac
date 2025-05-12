@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'api/**'  # Só roda se houver mudanças dentro da pasta 'api/'
+      - 'API/**'  # Só roda se houver mudanças dentro da pasta 'api/'
 
 jobs:
   build-and-deploy:
