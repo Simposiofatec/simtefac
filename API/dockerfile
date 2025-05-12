@@ -37,7 +37,7 @@ COPY --from=builder /app/file ./file
 RUN chown -R node:node /app
 USER node
 
-EXPOSE 444
+EXPOSE 8080
 ENTRYPOINT ["dumb-init", "--"]
 COPY .env .env
 CMD ["node", "dist/main.js"]

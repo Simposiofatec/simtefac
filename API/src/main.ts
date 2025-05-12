@@ -16,7 +16,7 @@ async function bootstrap() {
     origin: '*'
 });
   
-  await app.listen(444);
+  await app.listen(8080);
 }
 
 require('dotenv').config();
