@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Front-end/**'  # Só executa se houver alterações na pasta Front-end
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
