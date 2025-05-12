@@ -41,14 +41,14 @@ jobs:
         run: |
           az container delete \
             --resource-group Front \
-            --name simtefac \
+            --name apisimtefac \
             --yes || true
 
       - name: Deploy para Azure Container Instance
         run: |
           az container create \
             --resource-group Front \
-            --name simtefac \
+            --name apisimtefac \
             --image testsimtefac.azurecr.io/simtefac:${{ env.IMAGE_TAG }} \
             --ip-address public \
             --ports 8080 \
