@@ -32,7 +32,7 @@ jobs:
         run: echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Build da imagem Docker
-        working-directory: ./api
+        working-directory: ./API
         run: |
           docker build -t testsimtefac.azurecr.io/simtefac:${{ env.IMAGE_TAG }} .
 
