@@ -1,4 +1,4 @@
 const config = {
-    API_ROUTE: 'http://4.228.41.20:8080', 
+    API_ROUTE: 'https://20.201.94.224:8080', 
 };
 export default config;

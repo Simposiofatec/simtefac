@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY file/ /app/file/
+COPY ssl/ /app/ssl/
 RUN npm ci
 
 COPY . .
@@ -32,6 +33,8 @@ COPY --from=builder /app/package*.json ./
 RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/file ./file
+COPY --from=builder /app/ssl ./ssl
+
 
 # Cria e configura o usuário seguro
 RUN chown -R node:node /app
