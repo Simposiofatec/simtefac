@@ -60,6 +60,8 @@ jobs:
             --dns-name-label simtefachml \
             --location brazilsouth \
             --os-type Linux \
+            --cpu 1 \
+            --memory 1 \
             --registry-login-server testsimtefac.azurecr.io \
             --registry-username ${{ secrets.REGISTRY_USERNAME }} \
             --registry-password ${{ secrets.REGISTRY_PASSWORD }} \
