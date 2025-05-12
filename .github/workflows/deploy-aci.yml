@@ -55,7 +55,10 @@ jobs:
             --image testsimtefac.azurecr.io/simtefac:${{ env.IMAGE_TAG }} \
             --ip-address Public \
             --ports 8080 \
-            --environment-variables PORT=8080 \
+            --environment-variables \
+              DB_USERNAME=${{ secrets.DB_USERNAME }} \
+              DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+              PORT=8080 \
             --restart-policy Never \
             --dns-name-label simtefachml \
             --location brazilsouth \
