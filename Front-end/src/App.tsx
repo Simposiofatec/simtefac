@@ -10,7 +10,7 @@ import { setJWT } from './services/authentication.service';
 import { getEvents } from './services/event.service';
 import { getSubscriptionsFromSelfUser as getSelfUserSubscriptions } from './services/subscription.service';
 import { TopBar } from './components/top-bar.component';
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Subscription } from './models/subscription.model';
 
 
@@ -173,9 +173,9 @@ function App() {
           <RefreshFunctionsContext.Provider value={{ refreshSubscriptions, clearUser, refreshUser, refreshEvents }}>
             <AuthenticationModalsContext.Provider value={{ isSignInModalOpen, isSignUpModalOpen, isPasswordRecoveryModalOpen, isResetPasswordModalOpen, showSignInModal, showSignUpModal, showPasswordRecoveyModal, showResetPasswordModal, hideSignInModal, hideSignUpModal, hidePasswordRecoveryModal, hideResetPasswordModal }}>
               <EventContext.Provider value={events}>
-                <BrowserRouter>
+                <HashRouter>
                   <TopBar></TopBar>
-                </BrowserRouter>
+                </HashRouter>
               </EventContext.Provider>
             </AuthenticationModalsContext.Provider>
           </RefreshFunctionsContext.Provider>
