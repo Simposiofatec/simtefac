@@ -6,12 +6,8 @@ import * as fs from 'fs'
 import { join } from 'path';
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync(join(__dirname, '..', 'ssl', 'privkey.pem')),
-    cert: fs.readFileSync(join(__dirname, '..', 'ssl', 'cert.pem')),
-  };
+
   const app = await NestFactory.create(AppModule, {
-    httpsOptions
   });
 
   app.enableCors({
