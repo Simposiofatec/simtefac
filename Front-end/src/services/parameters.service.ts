@@ -18,3 +18,9 @@ export function getParameters(): Promise<Parameters> {
             });
     });
 };
+
+//Manda a requisição para salvar os parametros do sistema
+export function saveParameters(parametros: Parameters): Promise<void> {
+  return axios.post(`${config.API_ROUTE}/parameters`, parametros)
+
+}

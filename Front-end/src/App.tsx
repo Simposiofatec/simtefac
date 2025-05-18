@@ -12,7 +12,8 @@ import { getSubscriptionsFromSelfUser as getSelfUserSubscriptions } from './serv
 import { TopBar } from './components/top-bar.component';
 import { HashRouter } from "react-router-dom";
 import { Subscription } from './models/subscription.model';
-
+import ParametrizacaoIniacial from '../src/modals/ParametrosInicial';
+import { isNullOrUndefined } from 'html5-qrcode/esm/core';
 
 export const ParametersContext = createContext<Parameters | undefined>(undefined);
 export const UserContext = createContext<User | undefined>(undefined);
@@ -23,19 +24,64 @@ export const RefreshFunctionsContext = createContext<any>(undefined);
 export const AuthenticationModalsContext = createContext<any>(undefined);
 
 function App() {
-  const [parameters, setParameters] = useState<Parameters | undefined>(undefined);
+  const [parametersData, setParameters] = useState<Parameters | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [subscriptions, setSubscriptions] = useState<Subscription[] | undefined>(undefined);
   const [events, setEvents] = useState<Event[] | undefined>(undefined);
 
+  const [isParametrizacaoInicialModalOpen, setIsParametrizacaoInicialModalOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [isPasswordRecoveryModalOpen, setIsPasswordRecoveryModalOpen] = useState(false);
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(true);
 
   function clearUser() {
     setUser(undefined);
+  }
+
+  useEffect(() => {
+    async function loadAllData() {
+      try {
+        setLoading(true);
+
+        const params = await getParameters();
+        setParameters(params);
+
+        if (localStorage.getItem('token')) {
+          const userData = await getSelfUser();
+          setUser(userData);
+
+          const subs = await getSelfUserSubscriptions();
+          setSubscriptions(subs);
+        } else {
+          setUser(undefined);
+          setSubscriptions(undefined);
+        }
+
+        const eventsData = await getEvents();
+        setEvents(eventsData);
+
+      } catch (error) {
+        console.error("Erro no carregamento inicial", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadAllData();
+  }, []);
+
+  useEffect(() => {
+    if (isNullOrUndefined(parametersData?.eventsStart)) {
+      setIsParametrizacaoInicialModalOpen(true);
+    } else {
+      setIsParametrizacaoInicialModalOpen(false);
+    }
+  }, [parametersData]);
+
+  function hideParametrizacaoInicialModal() {
+    setIsParametrizacaoInicialModalOpen(false);
   }
 
   function refreshEvents() {
@@ -149,15 +195,6 @@ function App() {
   });
 
   useEffect(() => {
-    getParameters().then(parameters => {
-      setParameters(parameters);
-    });
-
-    if (localStorage.getItem('token'))
-      refreshUser();
-
-    refreshEvents();
-
     setIsResetPasswordModalOpen(window.location.hash === '#RecuperacaoDeSenha');
   }, []);
 
@@ -165,23 +202,39 @@ function App() {
     refreshSubscriptions();
   }, [user]);
 
+  if (loading) {
+    return (
+      <div className='bg-slate-800'>
+      <div className="loading-screen bg-slate-800">
+        Carregando... ⏳
+      </div>
+      </div>
+    );
+  }
 
   return (
-    <ParametersContext.Provider value={parameters}>
-      <UserContext.Provider value={user}>
-        <SubscriptionsContext.Provider value={subscriptions}>
-          <RefreshFunctionsContext.Provider value={{ refreshSubscriptions, clearUser, refreshUser, refreshEvents }}>
-            <AuthenticationModalsContext.Provider value={{ isSignInModalOpen, isSignUpModalOpen, isPasswordRecoveryModalOpen, isResetPasswordModalOpen, showSignInModal, showSignUpModal, showPasswordRecoveyModal, showResetPasswordModal, hideSignInModal, hideSignUpModal, hidePasswordRecoveryModal, hideResetPasswordModal }}>
-              <EventContext.Provider value={events}>
-                <HashRouter>
-                  <TopBar></TopBar>
-                </HashRouter>
-              </EventContext.Provider>
-            </AuthenticationModalsContext.Provider>
-          </RefreshFunctionsContext.Provider>
-        </SubscriptionsContext.Provider>
-      </UserContext.Provider>
-    </ParametersContext.Provider>
+    <>
+      <ParametersContext.Provider value={parametersData}>
+        <UserContext.Provider value={user}>
+          <SubscriptionsContext.Provider value={subscriptions}>
+            <RefreshFunctionsContext.Provider value={{ refreshSubscriptions, clearUser, refreshUser, refreshEvents }}>
+              <AuthenticationModalsContext.Provider value={{ isSignInModalOpen, isSignUpModalOpen, isPasswordRecoveryModalOpen, isResetPasswordModalOpen, showSignInModal, showSignUpModal, showPasswordRecoveyModal, showResetPasswordModal, hideSignInModal, hideSignUpModal, hidePasswordRecoveryModal, hideResetPasswordModal }}>
+                <EventContext.Provider value={events}>
+                  <HashRouter>
+                    <TopBar />
+                  </HashRouter>
+                </EventContext.Provider>
+              </AuthenticationModalsContext.Provider>
+            </RefreshFunctionsContext.Provider>
+          </SubscriptionsContext.Provider>
+        </UserContext.Provider>
+      </ParametersContext.Provider>
+
+      <ParametrizacaoIniacial //isso abre o modal de parametros iniciais caso necessario
+        isOpen={isParametrizacaoInicialModalOpen}
+        onClose={hideParametrizacaoInicialModal}
+      />
+    </>
   );
 }
 
