@@ -1,4 +1,5 @@
 import styles from './help.module.css'
+import inf from "../../data/Inf.json"
 export function Help() {
     return (
         <div className={styles.main}>
@@ -17,7 +18,7 @@ export function Help() {
                 </div>
                 <div>
                     <h3 className={`${styles.title}`}>Contato</h3>
-                    <p className={`${styles.description}`}>Caso tenha alguma dúvida ou problema, entre em contato conosco pelo e-mail <b>simposio@fateccatanduva.edu.br</b>.</p>
+                    <p className={`${styles.description}`}>Caso tenha alguma dúvida ou problema, entre em contato conosco pelo e-mail <b>{inf.email}</b>.</p>
                 </div>
             </div>
         </div>

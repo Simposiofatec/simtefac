@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Get, HttpStatus, Patch, Post, Res, SetMetadata, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { FailureResponse, SuccessResponse } from 'src/models/response';
@@ -32,7 +33,24 @@ export class ParameterController {
             }
         }
     }
+    
+ @Post('')
+  async create(@Body() parametros: SetParameterDTO, @Res() res: Response) {
+    try {
+      await this.parameterService.create(parametros); // método para salvar os parâmetros
+      const response: SuccessResponse = {
+        message: 'Parâmetros salvos com sucesso.',
+      };
 
+      res.status(HttpStatus.CREATED).send(response);
+    } catch (error) {
+      const response: FailureResponse = {
+        message: 'Ocorreu um erro desconhecido.',
+      };
+
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(response);
+    }
+  }
     @Patch('')
     async setParameter(@Body() setParameterDTO: SetParameterDTO, @Res() res: Response) {
         try {

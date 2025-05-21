@@ -1,16 +1,9 @@
-import { Injectable, Res } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'
-import { create } from 'domain';
-import { find, race } from 'rxjs/operators';
-import { CreateUserDTO } from 'src/models/dtos/createUser.dto';
-import { FindUserDTO } from 'src/models/dtos/findUser.dto';
 import { SetParameterDTO } from 'src/models/dtos/setParameter.dto';
-import { UpdateUserDTO } from 'src/models/dtos/updateUser.dto';
-import { AttributeEntity } from 'src/models/entities/attribute.entity';
 import { ParameterEntity } from 'src/models/entities/parameter.entity';
-import { UserEntity } from 'src/models/entities/user.entity';
-import { eError } from 'src/models/errors';
-import { Any, FindOperator, FindOptionsWhere, In, Raw, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ParameterService {
@@ -22,6 +15,28 @@ export class ParameterService {
         return parameters;
     }
 
+async create(parametros: SetParameterDTO) {
+  // Primeiro tenta buscar os parâmetros da versão atual
+  const existingParams = await this.parameterRepository.findOne({ where: { version: process.env.API_VERSION } });
+
+  if (!existingParams) {
+    // Se não existe, cria um novo
+    const newParams = this.parameterRepository.create({
+      ...parametros,
+      version: process.env.API_VERSION,
+    });
+
+    await this.parameterRepository.save(newParams);
+  } else {
+    // Se já existe, atualiza os campos
+    Object.assign(existingParams, parametros);
+
+    // Garante que a versão está correta (pode manter ou sobrescrever)
+    existingParams.version = process.env.API_VERSION;
+
+    await this.parameterRepository.save(existingParams);
+  }
+}
     async setParameter(setParameterDTO: SetParameterDTO) {
         let parameters: ParameterEntity = await this.getAll();
 
