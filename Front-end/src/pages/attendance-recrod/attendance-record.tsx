@@ -29,7 +29,10 @@ export default function AttendanceRecord() {
         if (!events)
             return;
 
-        const urlParams = new URLSearchParams(window.location.search);
+        const hash = window.location.hash; // ex: "#/RegistroDePresenca/?eventId=22"
+        const queryString = hash.split('?')[1]; // pega só "eventId=22"
+
+        const urlParams = new URLSearchParams(queryString);
         const eventId = urlParams.get('eventId');
         const event = events.find(event => event.id == eventId);
 
