@@ -27,7 +27,7 @@ jobs:
 
       - name: Build da imagem Docker
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest ./API
 
       - name: Push para o Docker Hub
         run: |
