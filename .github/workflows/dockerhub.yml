@@ -3,7 +3,13 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # ou outra branch que preferir
+      - main
+    paths:
+      - 'API/**'  # Só executa se houver alterações na pasta Front-end
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
 
 jobs:
   build-and-push:
