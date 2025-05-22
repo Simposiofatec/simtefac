@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'API/**'  # Só executa se houver alterações na pasta Front-end
+      - 'API/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -32,3 +32,22 @@ jobs:
       - name: Push para o Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest
+
+      - name: Deploy na VM com variáveis
+        if: github.ref == 'refs/heads/main'  # Só executa no push para main
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest
+            docker stop apisimtefac || true
+            docker rm apisimtefac || true
+            docker run -d \
+              --name apisimtefac \
+              -p 8080:8080 \
+              -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              -e PORT="8080" \
+              ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest
