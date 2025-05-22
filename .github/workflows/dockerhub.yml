@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-      
+    paths:
+    - 'API/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:

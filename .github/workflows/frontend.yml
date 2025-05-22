@@ -1,0 +1,40 @@
+name: Deploy Frontend Estático via SCP
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Front-end/**'  # Ajuste conforme a pasta do seu build
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências e gerar build (se necessário)
+        run: |
+          cd ./Front-end
+          npm install
+          npm run build
+
+      - name: Enviar arquivos para a VM via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          source: "Front-end/build/*"
+          target: "/var/www/react-app"
+
+      - name: Reiniciar Caddy (opcional, geralmente não precisa)
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            sudo systemctl reload caddy
