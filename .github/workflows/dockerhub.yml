@@ -51,3 +51,8 @@ jobs:
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e PORT="8080" \
               ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest
+
+      - name: Debug SSH Key
+        run: |
+          echo "Chave SSH:"
+          echo "${{ secrets.VM_SSH_KEY }}" | head -c 50  # Mostra os primeiros 50 chars para verificar
