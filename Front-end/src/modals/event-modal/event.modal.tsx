@@ -78,7 +78,7 @@ export function EventModal(props: any) {
             );
     }
 
-    const options = { hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' };
+    const options = { hour: '2-digit', minute: '2-digit' }; // sem timeZone
     const strStartDate = event.start.toLocaleDateString('pt-BR');
     const strStartTime = event.start.toLocaleTimeString('pt-BR', options);
     const strEndTime = event.end.toLocaleTimeString('pt-BR', options);
