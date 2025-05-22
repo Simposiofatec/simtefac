@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'API/**'
+      
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
@@ -28,6 +27,9 @@ jobs:
       - name: Build da imagem Docker
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest ./API
+          echo "Chave SSH:"
+          echo "${{ secrets.VM_SSH_KEY }}" | head -c 50  # Mostra os primeiros 50 chars para verificar
+
 
       - name: Push para o Docker Hub
         run: |
@@ -51,8 +53,3 @@ jobs:
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               -e PORT="8080" \
               ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest
-
-      - name: Debug SSH Key
-        run: |
-          echo "Chave SSH:"
-          echo "${{ secrets.VM_SSH_KEY }}" | head -c 50  # Mostra os primeiros 50 chars para verificar
