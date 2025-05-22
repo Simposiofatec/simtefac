@@ -1,4 +1,4 @@
 const config = {
-    API_ROUTE: 'http://simtefachml.brazilsouth.azurecontainer.io:8080', 
+    API_ROUTE: 'https://api.simtefac.com.br', 
 };
 export default config;
