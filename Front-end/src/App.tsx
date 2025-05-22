@@ -144,7 +144,7 @@ function App() {
   function hideSignUpModal() {
     setIsSignUpModalOpen(false);
   }
- 
+
   function showPasswordRecoveyModal() {
     setIsSignInModalOpen(false);
     setIsSignUpModalOpen(false);
