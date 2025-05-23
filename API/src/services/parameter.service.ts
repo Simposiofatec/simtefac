@@ -10,10 +10,16 @@ export class ParameterService {
     constructor(@InjectRepository(ParameterEntity) private parameterRepository: Repository<ParameterEntity>) { }
 
     async getAll(): Promise<ParameterEntity> {
-        const parameters = this.parameterRepository.findOne({ where: { version: process.env.API_VERSION } });
+    const parameters = await this.parameterRepository.findOne({
+      where: { version: process.env.API_VERSION },
+    });
 
-        return parameters;
+    if (!parameters) {
+      throw new Error('Parameters not found');
     }
+
+    return parameters;
+  } 
 
 async create(parametros: SetParameterDTO) {
   // Primeiro tenta buscar os parâmetros da versão atual
@@ -37,14 +43,13 @@ async create(parametros: SetParameterDTO) {
     await this.parameterRepository.save(existingParams);
   }
 }
-    async setParameter(setParameterDTO: SetParameterDTO) {
-        let parameters: ParameterEntity = await this.getAll();
+  async setParameter(setParameterDTO: SetParameterDTO) {
+    let parameters: ParameterEntity = await this.getAll();
 
-        if (!parameters)
-            parameters = { version: process.env.API_VERSION } as ParameterEntity;
+    if (!parameters) parameters = { version: process.env.API_VERSION } as ParameterEntity;
+       
+    parameters[setParameterDTO.name] = setParameterDTO.value;
 
-        parameters[setParameterDTO.name] = setParameterDTO.value;
-
-        this.parameterRepository.save(parameters);
-    }
+    this.parameterRepository.save(parameters);
+  }
 }
