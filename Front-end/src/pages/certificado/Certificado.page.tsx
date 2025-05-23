@@ -81,8 +81,8 @@ presencasFunction();
   return (
     <div className="flex flex-col items-center justify-center min-h-screen mt-4">
       <div className="max-w-xl text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-1">Gerar Certificado</h1>
-        <div className="mt-2 text-sm text-gray-900 italic">
+        <h1 className="text-3xl font-bold text-white mb-1">Gerar Certificado</h1>
+        <div className="mt-2 text-sm text-white italic">
           {!pdfUrl ? (
             <p>Você deve possuir mais de 75% de presença para que o certificado seja gerado</p>):
             <p>Certificado gerado com sucesso ✔️</p>
@@ -99,7 +99,7 @@ presencasFunction();
       <div className="mt-2">
       <button 
         onClick={processWordFile} 
-        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition duration-300">
+        className="bg-purple-500 hover:bg-purple-600 text-white font-semibold px-6 py-3 rounded-lg shadow transition duration-300">
         Gerar PDF
       </button>
       </div>

@@ -58,14 +58,13 @@ function App() {
           setUser(undefined);
           setSubscriptions(undefined);
         }
+        setLoading(false);
 
         const eventsData = await getEvents();
         setEvents(eventsData);
 
       } catch (error) {
         console.error("Erro no carregamento inicial", error);
-      } finally {
-        setLoading(false);
       }
     }
 
@@ -202,15 +201,21 @@ function App() {
     refreshSubscriptions();
   }, [user]);
 
-  if (loading) {
-    return (
-      <div className='bg-slate-800'>
-      <div className="loading-screen bg-slate-800">
-        Carregando... ⏳
+if (loading) {
+  return (
+    <div className="h-screen w-screen bg-slate-800 flex items-center justify-center">
+      <div className="flex flex-col items-center">
+        <div
+          className="w-14 h-14 border-4 border-t-transparent rounded-full animate-spin shadow-lg"
+          style={{ borderColor: 'rgb(139 92 246)', borderTopColor: 'transparent' }}
+        ></div>
+        <span className="text-purple-200 mt-4 text-lg font-medium tracking-wide">
+          Carregando...
+        </span>
       </div>
-      </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <>
