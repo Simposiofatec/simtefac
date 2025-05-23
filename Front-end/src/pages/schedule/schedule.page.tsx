@@ -35,7 +35,7 @@ export function Schedule(props: any) {
 
     let visibleDays: Date[] = [];
 
-    for (let i = 0; i < getDaysBetweenDates(parameters.eventsStart, parameters.eventsEnd); i++) {
+    for (let i = 0; i <= getDaysBetweenDates(parameters.eventsStart, parameters.eventsEnd); i++) {
         let date = new Date(parameters.eventsStart);
         date.setDate(date.getDate() + i);
         visibleDays.push(date);
