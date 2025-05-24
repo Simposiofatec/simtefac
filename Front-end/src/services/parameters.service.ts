@@ -1,16 +1,19 @@
 import axios from 'axios';
 import config from '../config.js';
 import { Parameters } from '../models/parameters.model.js';
+import { parseISO, addHours} from 'date-fns';
 
 export function getParameters(retries = 1, delay = 1000): Promise<Parameters> {
     return new Promise((resolve, reject) => {
         axios.get(`${config.API_ROUTE}/parameters`)
             .then(response => {
                 let parameters: Parameters = response.data.content;
-                parameters.eventsStart = new Date(parameters.eventsStart);
-                parameters.eventsEnd = new Date(parameters.eventsEnd);
-                parameters.subscriptionsStart = new Date(parameters.subscriptionsStart);
-                parameters.subscriptionsEnd = new Date(parameters.subscriptionsEnd);
+
+                //NECESSÁRIO CONVERTER DEVIDO AO FUSO HORÁRIO DA API, CASO HOSPEDADO FORA DO BRASIL
+                parameters.eventsStart = addHours(parameters.eventsStart, 3);
+                parameters.eventsEnd = addHours(parameters.eventsEnd, 3);
+                parameters.subscriptionsStart = addHours(parameters.subscriptionsStart, 3);
+                parameters.subscriptionsEnd = addHours(parameters.subscriptionsEnd, 3);
 
                 resolve(response.data.content);
             }).catch(error => {
