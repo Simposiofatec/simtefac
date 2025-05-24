@@ -86,6 +86,7 @@ export class CertificateService {
             ]
         });
         
+        inscricoes.length = 5;
         if (!inscricoes) { // Se for null ou undefined
             return 0;
         }
