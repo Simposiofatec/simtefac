@@ -31,7 +31,7 @@
 
     padding: 2px;
     flex-grow: 1;
-    background-color: var(--color-contrast-lower);
+    background-color: #ead7ff; /* Roxinho bem suave de fundo */
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--hover-transition);
@@ -39,13 +39,14 @@
 }
 
 .day_tabs_item:hover {
-    background-color: var(--color-contrast-low);
-    transition: var(--hover-transition);
+     background-color: #d9beff;
 }
 
 .day_tabs_item.current {
-    background-color: rgb(31 41 55);
+    background-color: #a259ff; /* Roxo brabo */
     color: white;
+    box-shadow: 0 4px 12px rgba(162, 89, 255, 0.5); /* Glow roxinho pra ficar clean */
+    border: 1px solid #a259ff;
 }
 
 .day_tabs_item>div {

@@ -24,7 +24,7 @@
 
 .title{
     font-size: xx-large;
-    color: white;
+    color: rgb(217, 65, 255);
 }
 
 .main p {
@@ -32,7 +32,9 @@
 }
 
 .main>.content p.description {
-    font-size: medium;
+    text-align: justify;
+    text-justify: inter-word; /* Distribui melhor as palavras */
+    line-height: 1.5; /* Espaçamento entre linhas pra respirar */
 }
 
 .banner {
