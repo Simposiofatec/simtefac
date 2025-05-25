@@ -83,27 +83,49 @@ export class UserService {
         return this.userRepository.save(updatedUser);
     }
 
-    async createUsersFromXLSX(xlsxBuffer: Excel.Buffer) {
-        const workbook = new Excel.Workbook();
-        await workbook.xlsx.load(xlsxBuffer);
+async createUsersFromXLSX(xlsxBuffer: Excel.Buffer) {
+    const workbook = new Excel.Workbook();
+    await workbook.xlsx.load(xlsxBuffer);
 
-        const worksheet = workbook.getWorksheet(1);
-        worksheet.getRow(1).destroy();
+    const worksheet = workbook.getWorksheet(1);
+    worksheet.getRow(1).destroy(); // Remove cabeçalho
 
-        worksheet.eachRow((row: Excel.Row, rowNumber: number) => {
-            const email = row.getCell(1).value;
-            const name = row.getCell(2).value;
-            const attributes = row.getCell(3).value.toString().split(';');
+    const promises: Promise<any>[] = [];
 
-            const createUserDTO: CreateUserDTO = {
-                email,
-                name,
-                attributes
-            } as CreateUserDTO;
+    worksheet.eachRow((row: Excel.Row) => {
+        const email = row.getCell(1).value?.toString().trim();
+        const name = row.getCell(2).value?.toString().trim();
+        const attributesRaw = row.getCell(3).value;
 
-            this.createUser(createUserDTO);
-        });
-    }
+        const attributes = attributesRaw
+            ? attributesRaw.toString().split(';').map(attr => attr.trim())
+            : [];
+
+        // Validação mínima
+        if (!email || !name) {
+            console.warn(`Linha ${row.number} inválida. Dados incompletos.`);
+            return;
+        }
+
+        const createUserDTO: CreateUserDTO = {
+            email,
+            name,
+            attributes
+        };
+
+        const promise = this.createUser(createUserDTO)
+            .catch(err => {
+                console.error(`Erro ao criar usuário ${email}:`, err.message || err);
+                // Aqui você pode logar em algum sistema de logs se quiser
+            });
+
+        promises.push(promise);
+    });
+
+    await Promise.all(promises);
+
+    return { message: 'Importação de usuários finalizada com sucesso.' };
+}
 
     async getCertificado(userEmail: string): Promise<void> {
         const user = await this.userRepository.findOne({
