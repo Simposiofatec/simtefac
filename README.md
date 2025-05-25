@@ -31,18 +31,30 @@
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/simtefac.git
+git clone https://github.com/Simposiofatec/simtefac.git
 
 # Acesse a pasta
-cd simtefac
+cd Front-end
 
 # Instale as dependências
 npm i -f
 
-# Configure as variáveis de ambiente
-cp .env.example .env
+# use o build
+npm run build
 
-# Edite o arquivo .env com suas credenciais
+# Inicie o servidor front
+npm run start
+
+# Acesse a pasta
+cd ..
+cd API
+
+# Instale as dependências
+npm i -f
+
+# use o build
+npm run build
 
 # Inicie o servidor
 npm run start
+
