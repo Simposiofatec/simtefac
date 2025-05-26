@@ -11,15 +11,31 @@ import { FindUserDTO } from 'src/models/dtos/findUser.dto';
 
 @Injectable()
 export class EventService {
-    constructor(@InjectRepository(EventEntity) private eventRepository: Repository<EventEntity>, @InjectRepository(AttributeEntity) private attributeRepository: Repository<AttributeEntity>) { }
+    constructor(
+        @InjectRepository(EventEntity) private eventRepository: Repository<EventEntity>,
+        @InjectRepository(AttributeEntity) private attributeRepository: Repository<AttributeEntity>
+    ) { }
 
+    /**
+     * Cria um novo evento com os atributos autorizados e de inscrição automática.
+     * @param createEventDTO - Dados para criação do evento.
+     * @returns Promise que resolve para o evento criado.
+     */
     async createEvent(createEventDTO: CreateEventDTO) {
-        const authorizedAttributes: AttributeEntity[] = (createEventDTO.authorizedAttributes == '*' || !createEventDTO.authorizedAttributes) ? await this.attributeRepository.find() : await this.attributeRepository.findBy({ id: In(createEventDTO.authorizedAttributes as string[]) });
-        const autoSubscribeAttributes: AttributeEntity[] = (createEventDTO.autoSubscribeAttributes == '*' || !createEventDTO.autoSubscribeAttributes) ? await this.attributeRepository.find() : await this.attributeRepository.findBy({ id: In(createEventDTO.autoSubscribeAttributes as string[]) });
+        const authorizedAttributes: AttributeEntity[] = (createEventDTO.authorizedAttributes == '*' || !createEventDTO.authorizedAttributes)
+            ? await this.attributeRepository.find()
+            : await this.attributeRepository.findBy({ id: In(createEventDTO.authorizedAttributes as string[]) });
+        const autoSubscribeAttributes: AttributeEntity[] = (createEventDTO.autoSubscribeAttributes == '*' || !createEventDTO.autoSubscribeAttributes)
+            ? await this.attributeRepository.find()
+            : await this.attributeRepository.findBy({ id: In(createEventDTO.autoSubscribeAttributes as string[]) });
         const event = { ...createEventDTO, authorizedAttributes, autoSubscribeAttributes } as EventEntity;
         return this.eventRepository.save(event);
     }
 
+    /**
+     * Busca todos os eventos cadastrados, incluindo atributos e inscrições relacionadas.
+     * @returns Promise que resolve para um array de eventos.
+     */
     async getAll(): Promise<EventEntity[]> {
         const events = this.eventRepository.find({
             relations: [
@@ -32,6 +48,11 @@ export class EventService {
         return events;
     }
 
+    /**
+     * Busca um evento pelo ID, incluindo atributos e inscrições relacionadas.
+     * @param id - ID do evento.
+     * @returns Promise que resolve para o evento encontrado.
+     */
     async getById(id: string): Promise<EventEntity> {
         const event = this.eventRepository.findOne({
             where: { id: id },
@@ -45,6 +66,12 @@ export class EventService {
         return event;
     }
 
+    /**
+     * Busca as inscrições de um evento, podendo filtrar por e-mail do usuário.
+     * @param eventId - ID do evento.
+     * @param userEmail - E-mail do usuário (opcional).
+     * @returns Promise que resolve para um array de inscrições.
+     */
     async getSubscriptions(eventId: string, userEmail?: string): Promise<SubscriptionEntity[]> {
         let findWhereOptions: FindOptionsWhere<EventEntity> = { id: eventId }
 
@@ -66,6 +93,11 @@ export class EventService {
         return event?.subscriptions;
     }
 
+    /**
+     * Cria múltiplos eventos a partir de um arquivo XLSX.
+     * Cada linha da planilha representa um evento.
+     * @param xlsxBuffer - Buffer do arquivo XLSX.
+     */
     async createEventsFromXLSX(xlsxBuffer: Excel.Buffer) {
         const workbook = new Excel.Workbook();
         await workbook.xlsx.load(xlsxBuffer);

@@ -11,8 +11,17 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class SubscriptionService {
-    constructor(@InjectRepository(SubscriptionEntity) private subscriptionRepository: Repository<SubscriptionEntity>, @InjectRepository(EventEntity) private eventRepository: Repository<EventEntity>) { }
+    constructor(
+        @InjectRepository(SubscriptionEntity) private subscriptionRepository: Repository<SubscriptionEntity>,
+        @InjectRepository(EventEntity) private eventRepository: Repository<EventEntity>
+    ) { }
 
+    /**
+     * Busca todas as inscrições de um usuário pelo e-mail.
+     * Inclui as relações com usuário e evento.
+     * @param userEmail - E-mail do usuário.
+     * @returns Promise que resolve para um array de inscrições.
+     */
     async find(userEmail: string): Promise<SubscriptionEntity[]> {
         const subscriptions = this.subscriptionRepository.find({
             where: {
@@ -27,6 +36,12 @@ export class SubscriptionService {
         return subscriptions;
     }
 
+    /**
+     * Cria uma nova inscrição para um usuário em um evento.
+     * Valida se o evento existe, se o usuário já está inscrito e se há vagas.
+     * @param createSubscriptionDTO - Dados para criar a inscrição.
+     * @returns Promise que resolve para a inscrição criada.
+     */
     async createSubscription(createSubscriptionDTO: CreateSubscriptionDTO) {
         const event = await this.eventRepository.findOne({
             where: {
@@ -58,6 +73,11 @@ export class SubscriptionService {
         return this.subscriptionRepository.save(subscription);
     }
 
+    /**
+     * Remove a inscrição de um usuário em um evento.
+     * @param deleteSubscriptionDTO - Dados para identificar a inscrição a ser removida.
+     * @returns Promise que resolve quando a inscrição é removida.
+     */
     async deleteSubscription(deleteSubscriptionDTO: DeleteSubscriptionDTO) {
         if (!await this.subscriptionRepository.findOne({
             where: {
@@ -74,6 +94,12 @@ export class SubscriptionService {
         });
     }
 
+    /**
+     * Registra a entrada ou saída do usuário em um evento, conforme a obrigatoriedade.
+     * Se a entrada já foi registrada, registra a saída.
+     * @param createRecordDTO - Dados para registrar presença.
+     * @returns Promise que resolve para a inscrição atualizada.
+     */
     async createRecord(createRecordDTO: CreateRecordDTO): Promise<SubscriptionEntity | undefined> {
         const subscription = await this.subscriptionRepository.findOne({
             relations: [
