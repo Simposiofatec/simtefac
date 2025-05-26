@@ -9,7 +9,6 @@ import { exec } from 'child_process';
 import * as PizZip from 'pizzip';
 import * as Docxtemplater from 'docxtemplater';
 
-
 @Injectable()
 export class CertificateService {
     constructor(
@@ -17,6 +16,13 @@ export class CertificateService {
         private subscriptionRepository: Repository<SubscriptionEntity>
     ) { }
 
+    /**
+     * Gera um certificado em PDF para o usuário informado.
+     * Substitui variáveis no template DOCX, converte para PDF e retorna o buffer do arquivo.
+     * Remove arquivos temporários após a geração.
+     * @param nomeUsuario - Nome do usuário para o certificado.
+     * @returns Promise que resolve para um Buffer contendo o PDF gerado.
+     */
     async gerarCertificado(nomeUsuario: string): Promise<Buffer> {
         const modeloPath = path.resolve(__dirname, '../../file/Certificado.docx');
         const tempDocxPath = path.resolve(__dirname, `../../file/certificado_${Date.now()}.docx`);
@@ -53,9 +59,6 @@ export class CertificateService {
     
         // 2. Converte DOCX para PDF usando LibreOffice (modo headless)
         await new Promise((resolve, reject) => {
-
-            //exec(`"C:\\Program Files\\LibreOffice\\program\\soffice.exe" --headless --convert-to pdf "${tempDocxPath}" --outdir "${path.dirname(tempDocxPath)}"`, (error, stdout, stderr) => {
-            //EM TESTE LOCAL, FORA DE CONTAINER: SUBSTITUA A LINHA ABAIXO POR ESTA ACIMA: 
             exec(`soffice --headless --convert-to pdf "${tempDocxPath}" --outdir "${path.dirname(tempDocxPath)}"`, (error, stdout, stderr) => {
                 if (error) {
                     return reject(`Erro na conversão: ${stderr}`);
@@ -74,6 +77,12 @@ export class CertificateService {
         return pdfBuffer;
     }
 
+    /**
+     * Busca a quantidade de presenças (inscrições com saída registrada) de um usuário.
+     * Limita o resultado a 5 inscrições.
+     * @param userEmail - E-mail do usuário.
+     * @returns Promise que resolve para o número de presenças.
+     */
     async getPresenca(userEmail: string): Promise<number> {
         const inscricoes = await this.subscriptionRepository.find({
             where: {
@@ -92,6 +101,4 @@ export class CertificateService {
         }
         return inscricoes.length;
     }
-
 }
-

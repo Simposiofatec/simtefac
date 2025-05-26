@@ -26,6 +26,13 @@ export class AuthenticationService {
         @InjectRepository(PasswordRecoveryEntity) private passwordRecoveryRepository: Repository<PasswordRecoveryEntity>
     ) { }
 
+    /**
+     * Realiza o cadastro de um novo usuário.
+     * Valida os parâmetros, converte o e-mail para minúsculo e a senha para hash SHA256.
+     * Atualiza o usuário na base de dados.
+     * @param signUpDTO - Dados para cadastro.
+     * @returns Promise que resolve para o usuário cadastrado.
+     */
     async signUpUser(signUpDTO: SignUpDTO): Promise<UserEntity> {
         if (!signUpDTO.email || !signUpDTO.password)
             throw eError.INVALID_PARAMETERS
@@ -48,6 +55,12 @@ export class AuthenticationService {
         return this.userService.updateUser(signUpDTO as UpdateUserDTO);
     }
 
+    /**
+     * Realiza o login do usuário.
+     * Valida os parâmetros, converte o e-mail para minúsculo e compara a senha (hash SHA256).
+     * @param signInDTO - Dados de login.
+     * @returns Promise que resolve para o usuário autenticado.
+     */
     async signInUser(signInDTO: SignInDTO): Promise<UserEntity> {
         if (!signInDTO.email || !signInDTO.password)
             throw eError.INVALID_PARAMETERS
@@ -68,6 +81,11 @@ export class AuthenticationService {
         return user;
     }
 
+    /**
+     * Gera um token JWT para o usuário informado.
+     * @param email - E-mail do usuário.
+     * @returns Promise que resolve para o token JWT.
+     */
     public async generateToken(email: string): Promise<string> {
         email = email.toLowerCase();
 
@@ -92,6 +110,12 @@ export class AuthenticationService {
         }
     }
 
+    /**
+     * Inicia o processo de recuperação de senha.
+     * Gera um token de recuperação e envia por e-mail.
+     * @param recoverPasswordDTO - Dados para recuperação de senha.
+     * @returns Promise que resolve quando o e-mail é enviado.
+     */
     async recoverPassword(recoverPasswordDTO: RecoverPasswordDTO): Promise<void> {
         recoverPasswordDTO.email = recoverPasswordDTO.email.toLowerCase();
         const user = await this.userService.findOne({ email: recoverPasswordDTO.email } as FindUserDTO);
@@ -107,6 +131,12 @@ export class AuthenticationService {
         return this.mailerService.sendPasswordRecoveryEmail(user.email, passwordRecovery.token);
     }
 
+    /**
+     * Redefine a senha do usuário usando o token de recuperação.
+     * Valida o token, atualiza a senha (hash SHA256) e remove o token utilizado.
+     * @param resetPasswordDTO - Dados para redefinição de senha.
+     * @returns Promise que resolve para o usuário atualizado.
+     */
     async resetPassword(resetPasswordDTO: ResetPasswordDTO): Promise<UserEntity> {
         if (!resetPasswordDTO.password || resetPasswordDTO.password.length < 6 || !resetPasswordDTO.token)
             throw eError.NOT_ENOUGTH_PARAMETERS;
