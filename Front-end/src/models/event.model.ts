@@ -10,4 +10,4 @@ export interface Event {
     color: string;
     mandatoryEntry: boolean;
     mandatoryExit: boolean;
-} 
+}  
