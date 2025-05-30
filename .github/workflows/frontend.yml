@@ -28,7 +28,7 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           source: "Front-end/build/**" 
-          target: "/var/www/react-app"
+          target: "/simtefac/frontend"
           strip_components: 2
 
       - name: Reiniciar Caddy (opcional)
