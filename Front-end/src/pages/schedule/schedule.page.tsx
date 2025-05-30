@@ -82,8 +82,14 @@ export function Schedule(props: any) {
                                 <img src={CheckCircle}></img>
                             }
                             <div>
-                                <span>{getDayOfWeek(date)}</span>
-                                <span>{getDayOfMonth(date)}</span>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <span style={{ fontSize: '1rem', fontWeight: '600' }}>
+                                        {date.toLocaleDateString('pt-BR', { weekday: 'long' }).replace('-feira', '').replace('feira', '').trim()}
+                                    </span>
+                                    <span style={{ fontSize: '0.8rem', fontWeight: '500', color: '#CBCDDB'}}>
+                                        {date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     );
