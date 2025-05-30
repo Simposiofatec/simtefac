@@ -3,6 +3,7 @@ import { ParametersContext, SubscriptionsContext } from "../../App";
 import { Parameters } from "../../models/parameters.model";
 import { isHexDark, darkenHexColor } from "../../helpers/colorFunctions";
 import styles from './schedule-event.module.css';
+import '../../fonts/css/simtefac-embedded.css'
 import { EventModal } from "../../modals/event-modal/event.modal";
 import { Subscription } from "../../models/subscription.model";
 
@@ -17,7 +18,9 @@ export function ScheduleEvent(props: any) {
     const closeModal = () => setIsModalOpen(false);
 
     const style: CSSProperties = {
-        backgroundColor: props.event.color || '#f5ac70'
+        backgroundColor: "#1d283d",
+        border: `0.5px solid ${props.event.color || '#f5ac70'}`,
+        borderRadius: '0.5rem',
     };
 
     const bSubscribed = subscriptions?.find(subscription => subscription.event.id === props.event.id) ? true : false;
@@ -58,13 +61,29 @@ export function ScheduleEvent(props: any) {
         <>
             <div
                 className={`${styles.event} ${isHexDark(props.event.color) ? styles.dark : styles.light}`}
-                style={style}
+                style={{
+                ...style, padding: "1rem",
+                borderTop: `4px solid ${props.event.color || '#f5ac70'}`
+                }}                
                 onClick={openModal}
                 ref={eventCardRef}
             >
-                <span className={`${styles.time}`}>{`${strStartTime} - ${strEndTime}`} {bIsFull && '[LOTADO]'}</span>
-                <div>
-                    <span className={styles.title} >{props.event.title}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", height: "100%"}}>
+                    <span className={styles.title} style={{maxWidth:"80%"}} >{props.event.title}</span>
+                    <div>
+                        <i className='icon-group' style={{fontSize:"1.5vw" ,color: "#c7c7c7"}}></i>
+                        <span className={`${styles.event_subscription_count}`} style={{color: "#c7c7c7"}}>{`${event.subscriptionCount}/${event.maximumCapacity}`}</span>
+                    </div>
+                </div>
+                <div className={`${styles.event_detail}`}>
+                    <div>
+                        <i className='icon-clock' style={{fontSize: "1rem", color: `${event.color}`}}></i>
+                        <span style={{fontWeight: "500", color: "#C7C7C7"}} className={`${styles.time}`}>{`${strStartTime} - ${strEndTime}`} {bIsFull && '[LOTADO]'}</span>
+                    </div>
+                    <div className={`${styles.event_detail_icon}`}>
+                        <i className='icon-place' style={{fontSize: "1rem", color:  `${event.color}`}}></i>
+                        <div className={`${styles.event_detail_info}`} style={{fontWeight:"500",color: "#C7C7C7"}}>{event.place}</div>
+                    </div>
                 </div>
             </div >
             {isModalOpen && (

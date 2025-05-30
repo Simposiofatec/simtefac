@@ -20,7 +20,6 @@
 
 .event .time {
     font-weight: 300;
-    opacity: 50%;
 }
 
 .event .title {
@@ -30,7 +29,7 @@
 
 .event.light .time,
 .event.light .title {
-    color: black;
+    color: white;
 }
 
 .event.dark .time,
@@ -48,4 +47,15 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
+}
+
+.event_detail{
+    display: flex;
+    gap: 2vw;
+    font-size: 0.9rem;
+}
+
+.event_detail>div{
+    display: flex;
+    align-items: center;
 }
