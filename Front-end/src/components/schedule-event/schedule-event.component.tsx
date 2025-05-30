@@ -70,9 +70,9 @@ export function ScheduleEvent(props: any) {
             >
                 <div style={{ display: "flex", justifyContent: "space-between", height: "100%"}}>
                     <span className={styles.title} style={{maxWidth:"80%"}} >{props.event.title}</span>
-                    <div>
-                        <i className='icon-group' style={{fontSize:"1.5vw" ,color: "#c7c7c7"}}></i>
-                        <span className={`${styles.event_subscription_count}`} style={{color: "#c7c7c7"}}>{`${event.subscriptionCount}/${event.maximumCapacity}`}</span>
+                <div style={{display: "flex", alignItems: "center"}}>
+                        <i className={`icon-group ${styles.iconGroup}`} style={{fontSize:"1.5vw" ,color: "white", }}></i>
+                        <span className={`${styles.event_subscription_count}`} style={{color: "white"}}>{`${event.subscriptionCount}/${event.maximumCapacity}`}</span>
                     </div>
                 </div>
                 <div className={`${styles.event_detail}`}>

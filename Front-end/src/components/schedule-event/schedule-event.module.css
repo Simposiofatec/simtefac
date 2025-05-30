@@ -12,10 +12,11 @@
     flex-shrink: 0;
 }
 
+
 .event:hover {
-    box-shadow: var(--shadow-bottom-hard);
     transform: scale(1.01);
     transition: var(--hover-transition);
+    background-color: #1f2d46 !important;
 }
 
 .event .time {
@@ -38,7 +39,6 @@
 }
 
 .event>div {
-    overflow: hidden;
     flex-grow: 1;
 }
 
@@ -50,12 +50,22 @@
 }
 
 .event_detail{
-    display: flex;
-    gap: 2vw;
     font-size: 0.9rem;
+    margin-top: 1.5vh;
 }
 
 .event_detail>div{
     display: flex;
     align-items: center;
+}
+
+@media (max-width: 768px) {
+    .event .title{
+        font-size: 16px;
+        overflow: hidden;
+    }
+
+    .iconGroup{
+        font-size: 4vw !important;
+    }
 }

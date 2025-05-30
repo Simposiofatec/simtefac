@@ -144,7 +144,7 @@ export function EventModal(props: any) {
                         style={{color: isHexDark(event.color) ? 'white' : 'black' }}
                     >{event.title}</h2>
                     <div style={{ display: 'flex', alignItems: 'center', backgroundColor: event.color, filter: 'saturate(1.2)'}}>
-                        <i className='icon-group' style={{fontSize:"1.5vw" ,color: isHexDark(event.color) ? 'white' : 'black'}}></i>
+                        <i className='icon-group' style={{fontSize:"1.3rem" ,color: isHexDark(event.color) ? 'white' : 'black'}}></i>
                         <span className={`${styles.event_subscription_count}`} style={{color: isHexDark(event.color) ? 'white' : 'black'}}>{`${event.subscriptionCount}/${event.maximumCapacity}`}</span>
                     </div>
                 </div>

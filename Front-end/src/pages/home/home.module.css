@@ -20,9 +20,6 @@
     color: white;
 }
 
-.main>.content p.description {
-    font-size: medium;
-}
 
 .banner {
     background: #1e283a;
@@ -37,7 +34,7 @@
     flex-direction: column-reverse;
     justify-content: center;
     padding: 50px;
-    margin: auto;
+    margin: 0;
     gap: 25px;
     max-width: 780px;
 }
@@ -76,6 +73,36 @@
     display: none;
 }
 
+.title{
+    color: white;
+    text-align: start;
+    margin-top: 20px;
+}
+
+.title>div{
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 3vh;
+}
+
+.title>span{
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.description_title {
+    color: white;
+    font-weight: 600;
+    align-self: flex-start;
+    font-size: 1.5rem;
+    margin-bottom: 2vh;
+}
+
+.description{
+    font-size: 1rem;
+    color: #CBCDDB !important;
+}
+
 @media (min-width: 768px) {
     .Fatec15Anos {
         height: 256px;
@@ -106,7 +133,4 @@
         margin-top: 30px;
     }
 
-    .main>.content p.description {
-        font-size: larger;
-    }
 }
