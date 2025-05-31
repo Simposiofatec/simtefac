@@ -179,4 +179,17 @@ export class UserService {
         
         await this.userRepository.save(user); 
     }
+
+    async getUserByEmail(email: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+        where: { email: email },
+    });
+
+    if (!user) {
+        throw new Error(`Usuário com email ${email} não encontrado.`);
+    }
+
+    return user;
+}
+
 }

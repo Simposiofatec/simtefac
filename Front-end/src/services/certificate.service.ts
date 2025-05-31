@@ -2,13 +2,13 @@ import axios from 'axios';
 import config from '../config.js';
 
 /**
- * Busca o certificado de um usuário pelo nome.
- * @param nome - Nome do usuário.
+ * Busca o certificado de um usuário pelo e-mail.
+ * @param email - e-mail do usuário.
  * @returns Promise que resolve para um Blob contendo o certificado.
  */
-export function GetCertificado(nome: string): Promise<Blob> {
+export function GetCertificado(email: string): Promise<Blob> {
     return new Promise((resolve, reject) => {
-        axios.get(`${config.API_ROUTE}/certificate/certificado/${nome}`, {
+        axios.get(`${config.API_ROUTE}/certificate/certificado/${email}`, {
             responseType: 'blob' // Retorna o arquivo como Blob (binário)
         })
         .then(response => {

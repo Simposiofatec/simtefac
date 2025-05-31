@@ -12,6 +12,7 @@ export function CertificadoPdf() {
   const [presencas, setPresencas] = useState<number | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [duration, setDuration] = useState<Parameters | null>(null);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   /**
  * @summary Resgata o usuario logado e insere ele no usuario
  * @description Isso foi feito para evitar erro de undefined que ocorria
@@ -58,7 +59,7 @@ presencasFunction();
   
     try {
       // Gera e baixa o certificado do backend
-      const certificadoBlob = await GetCertificado(usuario.name);
+      const certificadoBlob = await GetCertificado(usuario.email);
   
       const url = window.URL.createObjectURL(certificadoBlob);
       setPdfUrl(url);
@@ -89,13 +90,24 @@ presencasFunction();
           }
         </div>
       </div>
-      {pdfUrl && (
-        // eslint-disable-next-line jsx-a11y/iframe-has-title
-        <iframe
-          src={pdfUrl}
-          className="mt-8 w-full max-w-4xl h-[80vh] border rounded shadow"
-        />
+        {pdfUrl && (
+        isMobile ? (
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg shadow"
+          >
+            Visualizar Certificado
+          </a>
+        ) : (
+          <iframe
+            src={pdfUrl}
+            className="w-full max-w-4xl h-[70vh] border rounded shadow"
+          />
+        )
       )}
+
       <div className="mt-2">
       <button 
         onClick={processWordFile} 
