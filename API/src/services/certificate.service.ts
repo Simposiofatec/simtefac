@@ -8,22 +8,36 @@ import { SubscriptionEntity } from 'src/models/entities/subscriptions.entity';
 import { exec } from 'child_process';
 import * as PizZip from 'pizzip';
 import * as Docxtemplater from 'docxtemplater';
+import { ParameterEntity } from 'src/models/entities/parameter.entity';
+import { UserService } from './user.service';
 
 @Injectable()
 export class CertificateService {
     constructor(
         @InjectRepository(SubscriptionEntity)
-        private subscriptionRepository: Repository<SubscriptionEntity>
+        private subscriptionRepository: Repository<SubscriptionEntity>,
+        @InjectRepository(ParameterEntity)
+        private parameterRepository: Repository<ParameterEntity>,
+        private readonly userService: UserService
     ) { }
 
     /**
      * Gera um certificado em PDF para o usuário informado.
      * Substitui variáveis no template DOCX, converte para PDF e retorna o buffer do arquivo.
      * Remove arquivos temporários após a geração.
-     * @param nomeUsuario - Nome do usuário para o certificado.
+     * @param email - email do usuário para o certificado.
      * @returns Promise que resolve para um Buffer contendo o PDF gerado.
      */
-    async gerarCertificado(nomeUsuario: string): Promise<Buffer> {
+    async gerarCertificado(email: string): Promise<Buffer> {
+
+    const presencas = await this.getPresenca(email);
+    const eventDuration = await this.getEventDuration();
+
+    if (presencas < eventDuration - 1) {
+        throw new Error(`O usuário possui ${presencas} presenças, mas são necessárias ${eventDuration} para gerar o certificado.`);
+    }
+    let usuario = await this.userService.getUserByEmail(email);
+    let nomeUsuario = usuario.name;
         const modeloPath = path.resolve(__dirname, '../../file/Certificado.docx');
         const tempDocxPath = path.resolve(__dirname, `../../file/certificado_${Date.now()}.docx`);
         const tempPdfPath = tempDocxPath.replace('.docx', '.pdf');
@@ -95,10 +109,21 @@ export class CertificateService {
             ]
         });
         
-        inscricoes.length = 5;
         if (!inscricoes) { // Se for null ou undefined
             return 0;
         }
         return inscricoes.length;
     }
+
+
+    async getEventDuration(): Promise<number> {
+    const param = await this.parameterRepository.findOne({ where: { version: '1.0.0' } });
+    if (!param) throw new Error('Configuração de evento não encontrada.');
+    const duration = param.eventDuration;
+    if (typeof duration !== 'number') {
+        throw new Error('eventDuration inválido.');
+    }
+    return duration;
+}
+
 }

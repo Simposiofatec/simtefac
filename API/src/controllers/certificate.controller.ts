@@ -10,12 +10,12 @@ import { CertificateService } from 'src/services/certificate.service';
 export class CertificateController {
     constructor(private readonly certificadoService: CertificateService) {}
 
-    @Get('certificado/:nome')
-    async getCertificado(@Res() res: Response, @Param('nome') nome: string) {
+    @Get('certificado/:email')
+    async getCertificado(@Res() res: Response, @Param('email') email: string) {
         try {
-            const buffer = await this.certificadoService.gerarCertificado(nome);
+            const buffer = await this.certificadoService.gerarCertificado(email);
     
-            res.setHeader('Content-Disposition', `attachment; filename=Certificado_${nome}.pdf`);
+            res.setHeader('Content-Disposition', `attachment; filename=Certificado_${email}.pdf`);
             res.setHeader('Content-Type', 'application/pdf');
     
             res.status(HttpStatus.OK).send(buffer);
