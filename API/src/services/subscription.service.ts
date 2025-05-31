@@ -122,6 +122,6 @@ export class SubscriptionService {
         else
             throw eError.RECORD_ALREADY_CREATED
 
-        return this.subscriptionRepository.save(subscription);
+        return this.subscriptionRepository.save(subscription); 
     }
 }

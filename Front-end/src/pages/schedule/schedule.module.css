@@ -19,6 +19,10 @@
     gap: 5px;
     height: fit-content;
     padding: 10px;
+    background-color: #1F2937;
+    border-radius: 8px;
+    border: solid 1px #374151;
+    margin: 5vh 0 2vh 0;
 }
 
 .day_tabs_item {
@@ -29,24 +33,22 @@
     align-items: center;
     justify-content: center;
 
-    padding: 2px;
+    padding: 1vh 0;
     flex-grow: 1;
-    background-color: #ead7ff; /* Roxinho bem suave de fundo */
+    background-color: #1F2937;
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--hover-transition);
     text-transform: uppercase;
+    color: #fff;
 }
 
 .day_tabs_item:hover {
-     background-color: #d9beff;
+     background-color: #374151;
 }
 
 .day_tabs_item.current {
     background-color: #a259ff; /* Roxo brabo */
-    color: white;
-    box-shadow: 0 4px 12px rgba(162, 89, 255, 0.5); /* Glow roxinho pra ficar clean */
-    border: 1px solid #a259ff;
 }
 
 .day_tabs_item>div {
@@ -88,6 +90,7 @@
     background-color: rgb(243 244 246);
     box-shadow: var(--shadow-bottom-hard);
     border-radius: var(--border-radius);
+    
 }
 
 .subscriptionProgress i {

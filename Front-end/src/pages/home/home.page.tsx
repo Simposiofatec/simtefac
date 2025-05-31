@@ -27,10 +27,12 @@ const mesEvento = parameters
       <div className={styles.banner}>
         <div className={styles.content}>
           <div>
-            <span>{parameters?.eventsStart.getDate()} A {parameters?.eventsEnd.getDate()} DE {mesEvento.toUpperCase()}</span>
-            <span>
-              {inf.AnosFatec} ANOS CONECTANDO CONHECIMENTO, TECNOLOGIA E SUCESSO PROFISSIONAL
-            </span>
+            <div className={styles.title}>
+              <div className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-bold">{parameters?.eventsStart.getDate()} A {parameters?.eventsEnd.getDate()} DE {mesEvento.toUpperCase()}</div>
+              <span>
+                {inf.AnosFatec} ANOS CONECTANDO <span style={{color:"#D8B4FE"}}>CONHECIMENTO</span>, <span style={{color:"#F3A3D4"}}>TECNOLOGIA</span> <div style={{color:"#93C5F5"}}>E SUCESSO PROFISSIONAL</div>
+              </span>
+            </div>
             <NavLink to={"/Programacao"} className="w-full h-fit mt-10">
               <button
                 className="w-full justify-center rounded-md border border-transparent enabled:bg-violet-500 py-2 px-4 text-sm font-medium text-white enabled:hover:bg-violet-800 enabled:focus:outline-none enabled:focus:ring-2 enabled:focus:ring-indigo-500 enabled:focus:ring-offset-2 disabled:bg-trasnparent"
@@ -50,6 +52,7 @@ const mesEvento = parameters
         </div>
       </div>
       <div className={`${styles.content}`}>
+        <h2 className={`${styles.description_title}`}>Sobre o <span style={{color:"#C084FC"}}>SIMTEFAC CATANDUVA</span></h2>
         <p className={`${styles.description}`}>
           O {inf.numeroSimposio}º Simpósio Fatec Catanduva ocorrerá entre os dias {parameters?.eventsStart.getDate()} e {parameters?.eventsEnd.getDate()} de {mesEvento} de {parameters?.eventsEnd.getFullYear()} de forma presencial exclusivamente para os alunos da
           Fatec Catanduva. A Fatec Catanduva procura proporcionar aos alunos
@@ -69,7 +72,7 @@ const mesEvento = parameters
         <br />
         <p className={`${styles.description}`}>
           Caso tenha alguma dúvida ou problema, entre em contato conosco pelo
-          e-mail <b>{inf.email}</b>.
+          e-mail <b style={{color:"#C084FC"}}>{inf.email}</b>.
         </p>
       </div>
     </div>

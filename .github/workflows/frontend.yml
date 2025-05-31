@@ -21,6 +21,16 @@ jobs:
           npm install
           npm run build
 
+      - name: Criar diretório remoto com sudo
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VM_IP }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            sudo mkdir -p /simtefac/frontend
+            sudo chown -R $USER:$USER /simtefac/frontend
+
       - name: Enviar arquivos para a VM via SCP
         uses: appleboy/scp-action@master
         with:
@@ -28,7 +38,7 @@ jobs:
           username: ${{ secrets.VM_USER }}
           key: ${{ secrets.VM_SSH_KEY }}
           source: "Front-end/build/**" 
-          target: "/var/www/react-app"
+          target: "/simtefac/frontend"
           strip_components: 2
 
       - name: Reiniciar Caddy (opcional)
