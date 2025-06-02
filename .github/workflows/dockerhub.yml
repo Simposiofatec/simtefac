@@ -28,8 +28,7 @@ jobs:
       - name: Build da imagem Docker
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/apisimtefac:latest ./API
-          echo "Chave SSH:"
-          echo "${{ secrets.VM_SSH_KEY }}" | head -c 50  # Mostra os primeiros 50 chars para verificar
+          
 
 
       - name: Push para o Docker Hub
