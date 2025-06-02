@@ -11,11 +11,16 @@ import { subscribe, unsubscribe } from '../../services/subscription.service';
 import { ToasterError } from '../../helpers/toastr';
 import { hover } from '@testing-library/user-event/dist/hover';
 
-function extractSpeakers(description: string): string[] {
-    // Extrai nomes após "Palestrante" e remove pontos e dois pontos do resultado
-    return Array.from(description.matchAll(/Palestrante?:?\s*([^\n<]+)/gi), m =>
-        m[1].replace(/[.:]/g, '').trim()
+function extractSpeakersOrBanca(description: string): { speakers: string[], banca: string[] } {
+    const banca = Array.from(
+        description.matchAll(/<strong>Banca avaliadora:<\/strong>\s*([^.<\n]+)/gi),
+        m => m[1].replace(/[.:]/g, '').trim()
     );
+    const speakers = Array.from(
+        description.matchAll(/Palestrante?:?\s*([^\n<]+)/gi),
+        m => m[1].replace(/[.:]/g, '').trim()
+    );
+    return { speakers, banca };
 }
 
 export function EventModal(props: any) {
@@ -111,8 +116,8 @@ export function EventModal(props: any) {
     const bIsInEventDate: boolean = parameters != undefined && parameters.eventsStart.getTime() < new Date().getTime() && parameters.eventsEnd.getTime() > new Date().getTime();
 
 
-    const speakers = extractSpeakers(event.description);
-
+    const { speakers, banca } = extractSpeakersOrBanca(event.description);
+    
     return (
         <>
             <div className={`${styles.modal_background}`}
@@ -200,15 +205,17 @@ export function EventModal(props: any) {
                         </div>
                     </div>
                     <div>
-            <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap:"0.2rem", marginBottom: '0.5rem' }}>
-                    <svg style={{width: "1.3rem"}} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
-                    <span style={{fontWeight: "600", fontSize: "1.1rem"}}>Palestrante</span>
-                </div>
-                <div className={`${styles.event_speaker_details}`}>
-                    {speakers.length > 0 ? speakers.join(', ') : "Palestrante não informado"}
-                </div>
-            </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap:"0.2rem", marginBottom: '0.5rem' }}>
+                        <svg style={{width: "1.3rem"}} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21C5 17.134 8.13401 14 12 14C15.866 14 19 17.134 19 21M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+                        <span style={{fontWeight: "600", fontSize: "1.1rem"}}>
+                            {banca.length > 0 ? 'Banca Avaliadora' : 'Palestrante'}
+                        </span>
+                    </div>
+                    <div className={`${styles.event_speaker_details}`}>
+                        {banca.length > 0
+                            ? banca.join(', ')
+                            : (speakers.length > 0 ? speakers.join(', ') : "Palestrante não informado")}
+                    </div>
                     </div>
                     <div className={`${styles.event_description}`}>	
                         <span>Descrição do Evento</span>
