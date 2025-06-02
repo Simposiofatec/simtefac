@@ -58,11 +58,9 @@
     justify-content: center;
 }
 
-.day_tabs_item>img {
+.day_tabs_item img {
     width: 18px;
-    left: 10%;
-    margin-right: 10%;
-    margin-left: -10%;
+    margin-top: 1vh;
 }
 
 .day_tabs_item>div>span:nth-child(1) {

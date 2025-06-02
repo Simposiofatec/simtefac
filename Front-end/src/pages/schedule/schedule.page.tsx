@@ -65,31 +65,31 @@ export function Schedule(props: any) {
                             onClick={() => setSelectedDate(date)}
                             key={date.toISOString()}
                         >
-                            {subscriptions !== undefined &&
-                                subscriptions.find((subscription: Subscription) => {
-                                    const eventsOfDay: Event[] = events?.filter(function (event: Event) {
-                                        return (
-                                            event.start.getDate() === date?.getDate() &&
-                                            event.start.getMonth() === date?.getMonth() &&
-                                            event.start.getFullYear() === date?.getFullYear()
-                                        );
-                                    }) || [];
-
-                                    return eventsOfDay.find((event: Event) => {
-                                        return event.id === subscription.event.id
-                                    }) !== undefined;
-                                }) !== undefined &&
-                                <img src={CheckCircle}></img>
-                            }
                             <div>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                     <span style={{ fontSize: '1rem', fontWeight: '600' }}>
-                                        {date.toLocaleDateString('pt-BR', { weekday: 'long' }).replace('-feira', '').replace('feira', '').trim()}
+                                    {date.toLocaleDateString('pt-BR', { weekday: 'long' }).replace('-feira', '').replace('feira', '').trim()}
                                     </span>
                                     <span style={{ fontSize: '0.8rem', fontWeight: '500', color: '#CBCDDB'}}>
-                                        {date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
+                                    {date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}
                                     </span>
                                 </div>
+                            {subscriptions !== undefined &&
+                                subscriptions.find((subscription: Subscription) => {
+                                const eventsOfDay: Event[] = events?.filter(function (event: Event) {
+                                    return (
+                                    event.start.getDate() === date?.getDate() &&
+                                    event.start.getMonth() === date?.getMonth() &&
+                                    event.start.getFullYear() === date?.getFullYear()
+                                    );
+                                }) || [];
+
+                                return eventsOfDay.find((event: Event) => {
+                                    return event.id === subscription.event.id
+                                }) !== undefined;
+                                }) !== undefined &&
+                                <img src={CheckCircle} />
+                            }
                             </div>
                         </div>
                     );
