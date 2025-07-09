@@ -3,12 +3,11 @@ FROM node:18-slim AS builder
 
 WORKDIR /app
 
+# Instala apenas dependências de produção no início para melhor cache
 COPY package*.json ./
-COPY file/ /app/file/
-COPY ssl/ /app/ssl/
 RUN npm ci
 
-COPY . .
+COPY . ./
 RUN npm run build
 
 # Etapa final
@@ -16,7 +15,7 @@ FROM node:18-slim
 
 WORKDIR /app
 
-# Instala apenas os componentes essenciais do LibreOffice
+# Instala apenas os componentes necessários do LibreOffice
 RUN apt-get update && apt-get install -y \
     libreoffice-core \
     libreoffice-writer \
@@ -28,19 +27,24 @@ RUN apt-get update && apt-get install -y \
 # Verifica se LibreOffice está funcional
 RUN libreoffice --headless --version >/dev/null 2>&1
 
-# Copia os artefatos de build e instala dependências
+# Copia apenas o necessário do build
 COPY --from=builder /app/package*.json ./
 RUN npm ci --omit=dev
+
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/file ./file
 COPY --from=builder /app/ssl ./ssl
 
-
-# Cria e configura o usuário seguro
+# Muda permissões e usa usuário não-root
 RUN chown -R node:node /app
 USER node
 
+# Expõe a porta da aplicação NestJS
 EXPOSE 8080
+
+# Copia o .env no final, se realmente necessário
+COPY --chown=node:node .env .env
+
+# Inicia a aplicação com dumb-init
 ENTRYPOINT ["dumb-init", "--"]
-COPY .env .env
 CMD ["node", "dist/main.js"]

@@ -1,0 +1,10 @@
+:80 {
+  root * /usr/share/caddy
+  file_server
+
+  # Redireciona todas as rotas para index.html (SPA)
+  try_files {path} /index.html
+
+  # Gzip e headers padrão
+  encode gzip
+}
