@@ -7,7 +7,7 @@ services:
     container_name: react_frontend
     restart: always
     ports:
-      - "80:80" # apenas se não tiver proxy reverso externo
+      - "80:80"
     depends_on:
       - backend
 
@@ -21,9 +21,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      # - outras variáveis (JWT_SECRET, DATABASE_URL...) via .env ou direto aqui
+    env_file:
+      - ./backend/.env
     volumes:
       - ./backend/ssl:/app/ssl
       - ./backend/file:/app/file
-# Se você estiver usando Caddy como proxy reverso externo (fora dos containers),
-# pode remover a parte `ports` do frontend e backend e expor por rede interna (bridge)
