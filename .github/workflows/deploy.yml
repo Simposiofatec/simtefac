@@ -48,11 +48,11 @@ jobs:
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             DB_DATABASE=SIMTEFAC
 
-            EMAIL_SMTP_HOST= 'smtp.gmail.com'
+            EMAIL_SMTP_HOST=smtp.gmail.com
             EMAIL_SMTP_PORT=465
             EMAIL_USER=${{ secrets.EMAIL_USER }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
-            EMAIL_SMTP_DEFAULT_FROM=${ secrets.EMAIL_SMTP_DEFAULT_FROM }
+            EMAIL_SMTP_DEFAULT_FROM=${{ secrets.EMAIL_SMTP_DEFAULT_FROM }}
             NODE_ENV=production
             PORT=3000
             EOF
