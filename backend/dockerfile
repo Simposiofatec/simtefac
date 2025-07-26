@@ -42,8 +42,8 @@ USER node
 # Expõe a porta da aplicação NestJS
 EXPOSE 8080
 
-# Copia o .env no final, se realmente necessário
-COPY --chown=node:node .env .env
+# # Copia o .env no final, se realmente necessário
+# COPY --chown=node:node .env .env
 
 # Inicia a aplicação com dumb-init
 ENTRYPOINT ["dumb-init", "--"]

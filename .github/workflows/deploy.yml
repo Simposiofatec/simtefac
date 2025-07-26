@@ -36,7 +36,29 @@ jobs:
             mkdir -p ~/deploy
             cd ~/deploy
 
-            echo "
+            # Cria o arquivo backend.env com as variáveis sensíveis
+            cat <<EOF > backend.env
+            API_VERSION=1.0.0
+            JWT_KEY=${{ secrets.JWT_KEY }}
+            JWT_EXPIRATION=14d
+
+            DB_HOST=host.docker.internal
+            DB_PORT=1433
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_DATABASE=SIMTEFAC
+
+            EMAIL_SMTP_HOST= 'smtp.gmail.com'
+            EMAIL_SMTP_PORT=465
+            EMAIL_USER=${{ secrets.EMAIL_USER }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+            EMAIL_SMTP_DEFAULT_FROM=${ secrets.EMAIL_SMTP_DEFAULT_FROM }
+            NODE_ENV=production
+            PORT=3000
+            EOF
+
+            # Cria docker-compose.yml
+            cat <<EOF > docker-compose.yml
             version: '3.8'
             services:
               frontend:
@@ -57,9 +79,9 @@ jobs:
                 volumes:
                   - ./ssl:/app/ssl
                   - ./file:/app/file
-            " > docker-compose.yml
+              EOF
 
-            # Cria pastas de bind (caso não existam)
+            # Cria pastas bind (caso não existam)
             mkdir -p ssl file
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
