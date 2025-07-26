@@ -84,6 +84,6 @@ jobs:
             # Cria pastas bind (caso não existam)
             mkdir -p ssl file
 
-            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/simtefac-frontend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/simtefac-backend:latest
             docker compose up -d
