@@ -1,0 +1,67 @@
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Login no Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build e push do frontend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/simtefac-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/simtefac-frontend:latest
+
+      - name: Build e push do backend
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/simtefac-backend:latest ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/simtefac-backend:latest
+
+      - name: Acesso SSH e deploy na VM
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            mkdir -p ~/deploy
+            cd ~/deploy
+
+            echo "
+            version: '3.8'
+            services:
+              frontend:
+                image: ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+                ports:
+                  - '80:80'
+                restart: always
+                depends_on:
+                  - backend
+
+              backend:
+                image: ${{ secrets.DOCKER_USERNAME }}/backend:latest
+                ports:
+                  - '3000:3000'
+                restart: always
+                env_file:
+                  - ./backend.env
+                volumes:
+                  - ./ssl:/app/ssl
+                  - ./file:/app/file
+            " > docker-compose.yml
+
+            # Cria pastas de bind (caso não existam)
+            mkdir -p ssl file
+
+            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/backend:latest
+            docker compose up -d
