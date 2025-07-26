@@ -79,7 +79,7 @@ jobs:
                 volumes:
                   - ./ssl:/app/ssl
                   - ./file:/app/file
-              EOF
+            EOF
 
             # Cria pastas bind (caso não existam)
             mkdir -p ssl file
