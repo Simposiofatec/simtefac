@@ -29,14 +29,14 @@ jobs:
       - name: Acesso SSH e deploy na VM
         uses: appleboy/ssh-action@v1.0.0
         env:
-          FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/simtefac-frontend:latest
-          BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/simtefac-backend:latest
-          JWT_KEY: ${{ secrets.JWT_KEY }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          EMAIL_USER: ${{ secrets.EMAIL_USER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_SMTP_DEFAULT_FROM: ${{ secrets.EMAIL_SMTP_DEFAULT_FROM }}
+          FRONTEND_IMAGE: "${{ secrets.DOCKER_USERNAME }}/simtefac-frontend:latest"
+          BACKEND_IMAGE: "${{ secrets.DOCKER_USERNAME }}/simtefac-backend:latest"
+          JWT_KEY: "${{ secrets.JWT_KEY }}"
+          DB_USERNAME: "${{ secrets.DB_USERNAME }}"
+          DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
+          EMAIL_USER: "${{ secrets.EMAIL_USER }}"
+          EMAIL_PASSWORD: "${{ secrets.EMAIL_PASSWORD }}"
+          EMAIL_SMTP_DEFAULT_FROM: "${{ secrets.EMAIL_SMTP_DEFAULT_FROM }}"
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
