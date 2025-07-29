@@ -42,7 +42,7 @@ jobs:
             JWT_KEY="${{ secrets.JWT_KEY }}"
             JWT_EXPIRATION="14d"
 
-            DB_HOST="host.docker.internal"
+            DB_HOST="172.17.0.1"
             DB_PORT="1433"
             DB_USERNAME="${{ secrets.DB_USERNAME }}"
             DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
