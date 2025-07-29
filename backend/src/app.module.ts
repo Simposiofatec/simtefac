@@ -19,7 +19,7 @@ require('dotenv').config();
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    MailerService
+    MailerService,
   ],
   imports: [
     UserModule,
@@ -29,43 +29,43 @@ require('dotenv').config();
     EventModule,
     SubscriptionModule,
     TypeOrmModule.forRoot({
-
       type: 'mssql',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT || 1433),
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: ["dist/**/*.entity{.ts,.js}"],
-      synchronize: false,
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
       dropSchema: false,
       extra: {
         trustServerCertificate: true,
         encrypt: true,
-      }
+      },
     }),
     MailerModule.forRoot({
       transport: {
         host: process.env.EMAIL_SMTP_HOST,
-        secure: true, 
-        port: Number(process.env.EMAIL_SMTP_PORT), 
-        auth: { 
+        secure: true,
+        port: Number(process.env.EMAIL_SMTP_PORT),
+        auth: {
           user: process.env.EMAIL_USER,
           pass: process.env.EMAIL_PASSWORD,
         },
-        requireTLS: true
+        requireTLS: true,
       },
-      defaults: { // configurações que podem ser padrões
+      defaults: {
+        // configurações que podem ser padrões
         from: process.env.EMAIL_SMTP_DEFAULT_FROM,
       },
-    })
+    }),
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(TokenRefresherMiddleware)
-      .exclude("/authentication/(.*)")
-      .forRoutes("/");
+      .exclude('/authentication/(.*)')
+      .forRoutes('/');
   }
 }
