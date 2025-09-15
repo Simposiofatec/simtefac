@@ -7,14 +7,18 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Etapa final com Caddy
-FROM caddy:2-alpine
+# Etapa final com Alpine
+FROM node:18-alpine
 
-# Copia os arquivos do build do React
-COPY --from=builder /app/build /usr/share/caddy
+WORKDIR /app
 
-# Copia o Caddyfile (configuração)
-COPY Caddyfile /etc/caddy/Caddyfile
+# Copia arquivos buildados do React
+COPY --from=builder /app/build ./build
 
-# Servidor roda como não-root por padrão
+# Instala servidor estático
+RUN npm install -g serve
+
 EXPOSE 80
+
+# Comando para servir os arquivos
+CMD ["serve", "-s", "build", "-l", "80"]
