@@ -1,4 +1,4 @@
 const config = {
-  API_ROUTE: "https://api.simtefac.com.br:8080",
+  API_ROUTE: "https://api.simtefac.com.br",
 };
 export default config;
