@@ -20,7 +20,7 @@ services:
       - NODE_ENV=production
       - PORT=8080
     env_file:
-      - .env
+      - ../.env
     volumes:
       - ./backend/ssl:/app/ssl
       - ./backend/file:/app/file

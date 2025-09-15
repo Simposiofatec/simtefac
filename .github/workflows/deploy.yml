@@ -19,13 +19,16 @@ jobs:
           script: |
             cd ~/deploy
 
-            # Se o repositório ainda não existir na VM, clona
+            # Se não existir .git, clona normalmente em um subdiretório
             if [ ! -d ".git" ]; then
-              git clone https://github.com/Simposiofatec/simtefac.git .
-            else
-              git reset --hard
-              git pull origin dev
+              git clone https://github.com/Simposiofatec/simtefac.git repo
             fi
 
-            # Sobe containers já buildando com os Dockerfiles do repo
+            cd repo
+
+            # Sempre garante que o branch está atualizado
+            git fetch origin
+            git reset --hard origin/dev
+
+            # Sobe os containers
             docker compose up -d --build
