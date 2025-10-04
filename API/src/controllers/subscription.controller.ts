@@ -117,7 +117,6 @@ export class SubscriptionController {
     }
 
     @Post('record')
-    @AuthorizedAttributes('ADM')
     async createRecord(@Body() createRecordDTO: CreateRecordDTO, @Res() res: Response) {
         try {
             const response: SuccessResponse = {
